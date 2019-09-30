@@ -1,0 +1,11 @@
+AllCops:
+  TargetRubyVersion: 2.5
+
+Layout/CaseIndentation:
+  Enabled: false
+
+Layout/EndOfLine:
+  EnforcedStyle: lf
+
+Metrics/LineLength:
+  Max: 120
