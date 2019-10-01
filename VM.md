@@ -87,3 +87,8 @@ If the call stack is empty, the virtual machine should put the string
 ### Unrecognised opcodes
 
 If the virtual machine finds an unrecognised opcode, it must `halt`.
+
+### Out of bounds
+
+If the virtual machine tries to access an offset out of bounds of its memory,
+it must `halt`.
