@@ -83,3 +83,7 @@ the last `call`, completing the subroutine.
 
 If the call stack is empty, the virtual machine should put the string
 `<ret with empty stack>` in the output then immediately `halt`.
+
+### Unrecognised opcodes
+
+If the virtual machine finds an unrecognised opcode, it must `halt`.
