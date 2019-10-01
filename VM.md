@@ -13,7 +13,8 @@ occasion, this offset is encoded big-endian.
 The virtual machine’s starting offset is always `0x0000`.
 
 There is also the concept of a _call stack_. Offsets are stored in that stack
-by `call` to be used when `ret` is executed.
+by `call` to be used when `ret` is executed. The maximum length of the call
+stack is 256.
 
 ## Bytecode
 
@@ -72,7 +73,8 @@ to.
 
 When this opcode is run, the current offset plus one (i.e. the offset that
 would be ran if the `call` wasn’t there) is pushed to the _call stack_, and the
-given offset is `jump`ed to.
+given offset is `jump`ed to. If the call stack is full (256 entries), then the
+virtual machine must `halt`.
 
 ### Opcode `0x05`: `ret`
 
