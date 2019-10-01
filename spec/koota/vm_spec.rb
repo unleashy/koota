@@ -2,7 +2,7 @@
 
 require 'koota/vm'
 
-RSpec.fdescribe Koota::VM do
+RSpec.describe Koota::VM do
   let(:vm) { described_class.new }
 
   # helper opcode defs
@@ -10,6 +10,8 @@ RSpec.fdescribe Koota::VM do
   let(:op_jump) { Koota::VM::Opcodes::JUMP }
   let(:op_put)  { Koota::VM::Opcodes::PUT }
   let(:op_pick) { Koota::VM::Opcodes::PICK }
+  let(:op_call) { Koota::VM::Opcodes::CALL }
+  let(:op_ret)  { Koota::VM::Opcodes::RET }
 
   describe '#call' do
     context 'with no bytecode' do
@@ -88,6 +90,76 @@ RSpec.fdescribe Koota::VM do
         expect(vm.call(memory)).to eq('abc')
         expect(vm.call(memory)).to eq('bc')
         expect(vm.call(memory)).to eq('c')
+      end
+    end
+
+    context 'with call and ret opcodes' do
+      it 'calls plain subroutine' do
+        memory = [
+          op_put, 'a'.ord,
+          op_call, 0, 8, # call to subroutine
+          op_put, 'c'.ord,
+          op_halt,
+          # Subroutine starts here
+          op_put, 'b'.ord,
+          op_ret
+        ]
+
+        expect(vm.call(memory)).to eq('abc')
+      end
+
+      it 'calls nested subroutines' do
+        memory = [
+          op_put, 'a'.ord,
+          op_call, 0, 8, # call to subroutine 1
+          op_put, 'g'.ord,
+          op_halt,
+          # Subroutine 1 starts here
+          op_put, 'b'.ord,
+          op_call, 0, 16, # call to subroutine 2
+          op_put, 'f'.ord,
+          op_ret,
+          # Subroutine 2 starts here
+          op_put, 'c'.ord,
+          op_call, 0, 24, # call to subroutine 3
+          op_put, 'e'.ord,
+          op_ret,
+          # Subroutine 3 starts here
+          op_put, 'd'.ord,
+          op_ret
+        ]
+
+        expect(vm.call(memory)).to eq('abcdefg')
+      end
+
+      it 'can halt inside a subroutine' do
+        memory = [
+          op_put, 'a'.ord,
+          op_call, 0, 8, # call to subroutine
+          op_put, 'c'.ord,
+          op_halt,
+          # Subroutine starts here
+          op_put, 'b'.ord,
+          op_halt
+        ]
+
+        expect(vm.call(memory)).to eq('ab')
+      end
+
+      it 'halts on stack overflow' do
+        memory = [
+          op_call, 0, 0,   # calls itself!
+          op_put, 'a'.ord, # should never be reached
+          op_halt
+        ]
+
+        expect(vm.call(memory)).to eq('')
+      end
+    end
+
+    context 'with a ret opcode' do
+      it 'halts if call stack is empty' do
+        expect(vm.call([op_ret, op_put, 'a'.ord, op_halt])).to eq('')
       end
     end
   end

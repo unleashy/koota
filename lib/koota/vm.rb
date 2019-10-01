@@ -9,7 +9,11 @@ module Koota
       JUMP = 0x01
       PUT  = 0x02
       PICK = 0x03
+      CALL = 0x04
+      RET  = 0x05
     end
+
+    CALL_STACK_MAX = 256
 
     def initialize(random: Random.new)
       @random = random
@@ -17,6 +21,7 @@ module Koota
 
     def call(memory)
       output = ''.dup
+      call_stack = []
       offset = 0
 
       while offset < memory.length
@@ -42,6 +47,16 @@ module Koota
           # list length represents the length of each two-byte block.
           # Also, the offset starts at 1 to skip the list length.
           offset = Decode.short(memory, list_pointer + 2 * @random.rand(1..list_length))
+
+        when Opcodes::CALL
+          break if call_stack.length >= CALL_STACK_MAX
+          routine_pointer = Decode.short(memory, offset)
+          call_stack.push(offset + 2) # opcode after the routine pointer
+          offset = routine_pointer
+
+        when Opcodes::RET
+          offset = call_stack.pop
+          break if offset.nil?
 
         else break
         end
