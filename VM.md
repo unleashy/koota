@@ -52,8 +52,8 @@ and execution continues from there.
 - **Arguments**: an UTF-8 _character_ (1 to 4 bytes)
 - **Total length**: 2 to 5 bytes
 
-When this opcode is run, the virtual machine places the given _character_ at the end
-of its output.
+When this opcode is run, the virtual machine places the given _character_ at
+the end of its output.
 
 ### Opcode `0x03`: `pick`
 
@@ -61,17 +61,18 @@ of its output.
 - **Total length**: 3 bytes
 
 When this opcode is run, the given _offset_ is taken as the start pointer of a
-list of offsets ending in two `0x00` bytes. Then, an offset in that list is
-randomly picked, and that offset is `jump`ed to.
+list of offsets, with the first element representing the length of the list.
+Then, an offset in that list is randomly picked, and that offset is `jump`ed
+to.
 
 ### Opcode `0x04`: `call`
 
 - **Arguments**: an _offset_ (2 bytes)
 - **Total length**: 3 bytes
 
-When this opcode is run, the current offset plus one (i.e. the offset that would
-be ran if the `call` wasn’t there) is pushed to the _call stack_, and the given
-offset is `jump`ed to.
+When this opcode is run, the current offset plus one (i.e. the offset that
+would be ran if the `call` wasn’t there) is pushed to the _call stack_, and the
+given offset is `jump`ed to.
 
 ### Opcode `0x05`: `ret`
 
