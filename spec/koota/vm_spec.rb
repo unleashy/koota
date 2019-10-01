@@ -45,14 +45,12 @@ RSpec.describe Koota::VM do
         expect(vm.call([op_put, 'A'.ord, op_halt])).to eq('A')
       end
 
-      it 'decodes UTF-8 correctly' do
+      it 'decodes UTF-8 correctly', :aggregate_failures do
         originals = ['o', 'Δ', 'エ', '😎']
         unpackeds = originals.map(&:bytes)
 
-        aggregate_failures do
-          originals.zip(unpackeds) do |original, unpacked|
-            expect(vm.call([op_put, *unpacked, op_halt])).to eq(original)
-          end
+        originals.zip(unpackeds) do |original, unpacked|
+          expect(vm.call([op_put, *unpacked, op_halt])).to eq(original)
         end
       end
     end
