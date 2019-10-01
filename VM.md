@@ -7,7 +7,8 @@ where the generation result is.
 At all times, the virtual machine is at a memory address or _offset_, which is
 an unsigned 16-bit number (aka C `unsigned short`). The offset points to a
 memory location; therefore, the maximum amount of memory possible is 64 KiB
-(65536 bytes), which should be enough for any reasonable pattern.
+(65536 bytes), which should be enough for any reasonable pattern. In every
+occasion, this offset is encoded big-endian.
 
 The virtual machine’s starting offset is always `0x0000`.
 
