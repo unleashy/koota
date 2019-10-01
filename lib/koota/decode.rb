@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Koota
+  # Various helper decoding methods.
+  # @api private
   module Decode
     module_function
 

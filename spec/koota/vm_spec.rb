@@ -84,7 +84,7 @@ RSpec.describe Koota::VM do
           0, 3, # 3 items long
           0, 5, # points to put 'a'
           0, 7, # points to put 'b'
-          0, 9, # points to put 'c'
+          0, 9  # points to put 'c'
         ]
 
         expect(vm.call(memory)).to eq('abc')

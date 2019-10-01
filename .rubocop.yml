@@ -7,5 +7,9 @@ Layout/CaseIndentation:
 Layout/EndOfLine:
   EnforcedStyle: lf
 
+Metrics:
+  Enabled: false
+
 Metrics/LineLength:
+  Enabled: true
   Max: 120

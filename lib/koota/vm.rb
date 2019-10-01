@@ -3,6 +3,8 @@
 require 'koota/decode'
 
 module Koota
+  # Implements a Koota virtual machine.
+  # @api private
   class VM
     module Opcodes
       HALT = 0x00
@@ -50,6 +52,7 @@ module Koota
 
         when Opcodes::CALL
           break if call_stack.length >= CALL_STACK_MAX
+
           routine_pointer = Decode.short(memory, offset)
           call_stack.push(offset + 2) # opcode after the routine pointer
           offset = routine_pointer
