@@ -4,7 +4,6 @@ require 'koota/decode'
 
 module Koota
   # Implements a Koota virtual machine.
-  # @api private
   class VM
     module Opcodes
       HALT = 0x00
