@@ -2,11 +2,11 @@
 
 module Koota
   class Pattern
-    attr_reader :pattern, :refs
+    attr_reader :string, :refs
 
     def initialize(pattern, refs = {})
-      @pattern = pattern
-      @refs    = refs
+      @string = pattern
+      @refs   = refs
     end
   end
 end

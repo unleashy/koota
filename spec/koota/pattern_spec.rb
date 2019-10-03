@@ -4,9 +4,9 @@ RSpec.describe Koota::Pattern do
   let(:subpattern) { described_class.new('t/d') }
   let(:pattern)    { described_class.new('a/b/c/D', D: subpattern) }
 
-  describe '#pattern' do
+  describe '#string' do
     it 'returns the raw string of the pattern' do
-      expect(pattern.pattern).to eq('a/b/c/D')
+      expect(pattern.string).to eq('a/b/c/D')
     end
   end
 
