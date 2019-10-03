@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'koota/error'
+
 module Koota
   # Parses Koota patterns.
   class Parser
