@@ -243,12 +243,6 @@ generator.call(
 )
 ```
 
-You can also generate a single pattern by using `#call` on it:
-
-```ruby
-vowels.call # generates a single vowel
-```
-
 And you can get the bytecode for a generator with `#bytecode`:
 
 ```ruby
