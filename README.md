@@ -237,7 +237,6 @@ You can pass many of the same command-line options to `Koota::Generator#call`:
 generator.call(
   # Option: Default
   words: 100,             # Integer only
-  word_separator: ' ',    # String only
   syllables: 1,           # Integer or Range of Integer
   syllable_separator: '', # String only
   duplicates: false       # Boolean only
