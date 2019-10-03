@@ -222,19 +222,20 @@ vowels     = Koota::Pattern.new('a/e/i/o/u')
 consonants = Koota::Pattern.new('p/t/k/b/d/g/s/N', N: nasals) # N reference, must pass!
 ```
 
-Then, use a `Koota::Generator`, passing in the root pattern:
+Then, use a `Koota::Generator`, passing in the root pattern to `#call`:
 
 ```ruby
 root = Koota::Pattern.new('(C)V(N)', C: consonants, V: vowels, N: nasals)
 
-generator = Koota::Generator.new(root)
-generator.call # returns an Array<String> containing the generated words
+generator = Koota::Generator.new
+generator.call(root) # returns an Array<String> containing the generated words
 ```
 
 You can pass many of the same command-line options to `Koota::Generator#call`:
 
 ```ruby
 generator.call(
+  root,
   # Option: Default
   words: 100,             # Integer only
   syllables: 1,           # Integer or Range of Integer
