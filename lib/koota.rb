@@ -3,3 +3,4 @@
 require 'koota/version'
 require 'koota/error'
 require 'koota/pattern'
+require 'koota/generator'
