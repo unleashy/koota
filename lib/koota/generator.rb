@@ -24,11 +24,13 @@ module Koota
 
       bytecode = compile(pattern)
 
-      Array.new(options[:words]) do
-        result = Array.new(options[:syllables]) { @vm.call(bytecode) }
-        result.uniq! unless options[:duplicates]
-        result.join(options[:syllable_separator])
+      result = Array.new(options[:words]) do
+        Array.new(options[:syllables]) { @vm.call(bytecode) }.join(options[:syllable_separator])
       end
+
+      result.uniq! unless options[:duplicates]
+
+      result
     end
 
     private
