@@ -24,8 +24,17 @@ module Koota
 
       bytecode = compile(pattern)
 
+      syllables = if options[:syllables].is_a?(Integer)
+                    ->() { options[:syllables] }
+                  elsif options[:syllables].is_a?(Range)
+                    ->() { rand(options[:syllables]) }
+                  else
+                    type = options[:syllables].class.to_s
+                    raise ArgumentError, "expected Integer or Range for syllables option, not #{type}"
+                  end
+
       result = Array.new(options[:words]) do
-        Array.new(options[:syllables]) { @vm.call(bytecode) }.join(options[:syllable_separator])
+        Array.new(syllables.call) { @vm.call(bytecode) }.join(options[:syllable_separator])
       end
 
       result.uniq! unless options[:duplicates]

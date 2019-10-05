@@ -36,5 +36,17 @@ RSpec.describe Koota::Generator do
       expect(result).to all(match(/\A(?:[ptkmn]?[aiu]\.){3}[ptkmn]?[aiu]\z/))
       expect(result.uniq.length).to be(1) # aka everything is the same
     end
+
+    it 'uses syllable ranges correctly' do
+      result = generator.call(pattern, syllables: 1..4)
+
+      expect(result).to all(match(/\A(?:[ptkmn]?[aiu]){1,4}\z/))
+    end
+
+    context 'given syllables opt that is not Integer or Range' do
+      it 'raises ArgumentError' do
+        expect { generator.call(pattern, syllables: 'lol') }.to raise_error(ArgumentError)
+      end
+    end
   end
 end
