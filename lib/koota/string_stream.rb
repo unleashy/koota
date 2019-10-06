@@ -17,7 +17,11 @@ module Koota
     end
 
     def get
-      peek.tap { @pos += 1 }
+      peek.tap { advance }
+    end
+
+    def advance(k = 1)
+      @pos += k
     end
 
     def match?(*args)
@@ -26,15 +30,18 @@ module Koota
 
     def skip(*args)
       if (index = match?(*args))
-        @pos += args[index].length
+        advance(args[index].length)
       end
+    end
+
+    def skip_until(*args)
+      advance until empty? || match?(*args)
     end
 
     def get_until(*args)
       start = @pos
 
-      # Advance the position until the stopping point is found.
-      @pos += 1 until empty? || match?(*args)
+      skip_until(*args)
 
       start == @pos ? nil : @input[start, @pos - start]
     end
