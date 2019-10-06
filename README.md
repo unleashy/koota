@@ -164,20 +164,6 @@ koota -s 1,3 -r '.' my-patterns.koota
 Which will generate words like `ta.ka`, `na.po.ke`, etc. By default it is empty,
 which does away with syllabification.
 
-#### Options in the input file
-
-You can also set options directly on the input file:
-
-```koota
-! --words=500 --syllables=2,10 --duplicates -r '.'
-# ... rest ...
-```
-
-This must be the first non-comment line of the file. In fact, you can put any
-command-line options you want there—it’s the same as setting it on the
-command-line itself. If there’s a conflict between the file and the command-line,
-the command-line wins.
-
 #### Duplicate words
 
 Duplicate words are automatically pruned, so you may get less than 100 words.
