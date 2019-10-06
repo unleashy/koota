@@ -8,5 +8,9 @@ module Koota
       @string = pattern
       @refs   = refs
     end
+
+    def ==(o)
+      o.class == self.class && o.string == string && o.refs == refs
+    end
   end
 end
