@@ -51,7 +51,7 @@ RSpec.describe Koota::Compiler do
         op_ret
       ]
 
-      expect(compiler.call([:atom, 'aBc'], { B: [:atom, 'b'] })).to eq(code)
+      expect(compiler.call([:atom, 'aBc'], B: [:atom, 'b'])).to eq(code)
     end
 
     it 'processes nested references' do
@@ -68,7 +68,7 @@ RSpec.describe Koota::Compiler do
         op_ret
       ]
 
-      expect(compiler.call([:atom, 'aBc'], { B: [:atom, 'X'], X: [:atom, 'b'] })).to eq(code)
+      expect(compiler.call([:atom, 'aBc'], B: [:atom, 'X'], X: [:atom, 'b'])).to eq(code)
     end
 
     it 'ignores unreferenced' do
@@ -82,15 +82,16 @@ RSpec.describe Koota::Compiler do
         op_ret
       ]
 
-      expect(compiler.call([:atom, 'aBc'], { B: [:atom, 'b'], X: [:atom, 'x'] })).to eq(code)
+      expect(compiler.call([:atom, 'aBc'], B: [:atom, 'b'], X: [:atom, 'x'])).to eq(code)
     end
 
     it 'compiles pattern' do
-      expect(compiler.call([:pattern, [:atom, 'a'], [:atom, 'b']])).to eq([
+      expected = [
         op_put, 'a'.ord,
         op_put, 'b'.ord,
         op_halt
-      ])
+      ]
+      expect(compiler.call([:pattern, [:atom, 'a'], [:atom, 'b']])).to eq(expected)
     end
 
     it 'compiles choice' do
@@ -125,10 +126,10 @@ RSpec.describe Koota::Compiler do
         # Pick list starts here at offset 15
         0, 2, # 2 items long
         0, 3, # points to put 'a'
-        0, 8, # points to call 0, 12
+        0, 8  # points to call 0, 12
       ]
 
-      expect(compiler.call([:choice, [:atom, 'a'], [:atom, 'B']], { B: [:atom, 'b'] })).to eq(code)
+      expect(compiler.call([:choice, [:atom, 'a'], [:atom, 'B']], B: [:atom, 'b'])).to eq(code)
     end
 
     it 'compiles multiple pick lists' do
@@ -178,7 +179,7 @@ RSpec.describe Koota::Compiler do
         # Pick list starts here
         0, 2,
         0, 3, # Links to put 'b'
-        0, 7, # Links to halt
+        0, 7  # Links to halt
       ]
 
       expect(compiler.call([:maybe, [:pattern, [:atom, 'b'], [:atom, 'a']]])).to eq(code)

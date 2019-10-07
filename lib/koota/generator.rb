@@ -5,13 +5,14 @@ require 'koota/compiler'
 require 'koota/vm'
 
 module Koota
+  # This class uses a parser, compiler, and VM to generate words.
   class Generator
     DEFAULT_CALL_OPTIONS = {
       words: 100,
       syllables: 1,
       syllable_separator: '',
       duplicates: false
-    }
+    }.freeze
 
     def initialize(parser: Koota::Parser.new, compiler: Koota::Compiler.new, vm: Koota::VM.new)
       @parser   = parser
@@ -25,9 +26,9 @@ module Koota
       bytecode = compile(pattern)
 
       syllables = if options[:syllables].is_a?(Integer)
-                    ->() { options[:syllables] }
+                    -> { options[:syllables] }
                   elsif options[:syllables].is_a?(Range)
-                    ->() { rand(options[:syllables]) }
+                    -> { rand(options[:syllables]) }
                   else
                     type = options[:syllables].class.to_s
                     raise ArgumentError, "expected Integer or Range for syllables option, not #{type}"

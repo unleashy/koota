@@ -47,7 +47,7 @@ RSpec.describe Koota::Parser do
       ['a/(b)', Koota::Parser::Error.new('unexpected "("')],
       ['a/b(c)', [:pattern, [:choice, [:atom, 'a'], [:atom, 'b']], [:maybe, [:pattern, [:atom, 'c']]]]],
       ['()', Koota::Parser::Error.new('unexpected ")"')],
-      ['[]', Koota::Parser::Error.new('unexpected "]"')],
+      ['[]', Koota::Parser::Error.new('unexpected "]"')]
     ].freeze
 
     INPUTS.each do |input, result|

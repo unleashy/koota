@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Koota
+  # Encodes stuff!
   module Encode
     module_function
 

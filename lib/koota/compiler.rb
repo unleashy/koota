@@ -5,6 +5,8 @@ require 'koota/decode'
 require 'koota/vm'
 
 module Koota
+  # Compiles an AST as returned by {Koota::Parser#call} into bytecode to be
+  # consumed by {Koota::VM#call}.
   class Compiler
     include Koota::VM::Opcodes
 
@@ -32,11 +34,11 @@ module Koota
       # Compile referred ASTs, storing their start offset. Only compile those
       # that are referenced by a link.
       @refs.each do |ref, ref_ast|
-        if links.has_value?(ref)
-          offsets[ref] = @memory.length
-          compile(ref_ast)
-          add_bytecode(RET) # Close off with a ret since they are subroutines after all
-        end
+        next unless links.value?(ref)
+
+        offsets[ref] = @memory.length
+        compile(ref_ast)
+        add_bytecode(RET) # Close off with a ret since they are subroutines after all
       end
 
       # And link everything!
@@ -140,7 +142,8 @@ module Koota
     end
 
     def compile(ast)
-      raise ArgumentError, 'invalid AST' if ast.length < 1
+      raise ArgumentError, 'invalid AST' if ast.empty?
+
       send(:"compile_#{ast[0]}", *ast[1..-1])
     end
   end

@@ -13,3 +13,10 @@ Metrics:
 Metrics/LineLength:
   Enabled: true
   Max: 120
+
+Naming/UncommunicativeMethodParamName:
+  AllowedNames:
+    - vm
+
+Style/MultilineBlockChain:
+  Enabled: false

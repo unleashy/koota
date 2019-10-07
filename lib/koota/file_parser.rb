@@ -4,6 +4,7 @@ require 'koota/error'
 require 'koota/pattern'
 
 module Koota
+  # This class parses .koota input files; mainly used by {Koota::CLI}.
   class FileParser
     class Error < Koota::Error; end
 

@@ -90,7 +90,7 @@ RSpec.describe Koota::CLI do
         it 'complains about non existent files' do
           expect(result).to eq(false)
           expect(output.string).to include("error: could not find file 'test2.koota'")
-                               .and include("error: could not find file 'test3.koota'")
+            .and include("error: could not find file 'test3.koota'")
         end
       end
 

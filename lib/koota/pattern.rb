@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Koota
+  # This is a simple class holding a pattern string and its references hash.
   class Pattern
     attr_reader :string, :refs
 
@@ -9,8 +10,8 @@ module Koota
       @refs   = refs
     end
 
-    def ==(o)
-      o.class == self.class && o.string == string && o.refs == refs
+    def ==(other)
+      other.class == self.class && other.string == string && other.refs == refs
     end
   end
 end

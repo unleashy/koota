@@ -3,4 +3,3 @@
 module Koota
   class Error < StandardError; end
 end
-

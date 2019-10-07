@@ -6,6 +6,7 @@ require 'koota/file_parser'
 require 'slop'
 
 module Slop
+  # @api private
   class RangeOption < Option
     def call(value)
       split = value.split(',')
@@ -19,6 +20,7 @@ module Slop
 end
 
 module Koota
+  # This class handles the command-line interface to Koota.
   class CLI
     def initialize(program_name: $PROGRAM_NAME, output: $stdout)
       @file_parser = Koota::FileParser.new
@@ -89,9 +91,9 @@ module Koota
 
       Slop::Options.new(banner: banner) do |o|
         o.bool '-d',
-              '--duplicates',
-              'whether or not to keep duplicate words (default: false)',
-              default: false
+               '--duplicates',
+               'whether or not to keep duplicate words (default: false)',
+               default: false
 
         o.range '-s',
                 '--syllables',
@@ -99,9 +101,9 @@ module Koota
                 default: 1
 
         o.string '-r',
-                '--syllable-separator',
-                'the string separating each syllable (default: empty)',
-                default: ''
+                 '--syllable-separator',
+                 'the string separating each syllable (default: empty)',
+                 default: ''
 
         o.int '-w',
               '--words',
@@ -109,9 +111,9 @@ module Koota
               default: 100
 
         o.string '-p',
-                '--word-separator',
-                'the string separating each word (default: new line)',
-                default: "\n"
+                 '--word-separator',
+                 'the string separating each word (default: new line)',
+                 default: "\n"
 
         o.separator "\nother options:"
 

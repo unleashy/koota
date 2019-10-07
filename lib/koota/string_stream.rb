@@ -20,8 +20,8 @@ module Koota
       peek.tap { advance }
     end
 
-    def advance(k = 1)
-      @pos += k
+    def advance(steps = 1)
+      @pos += steps
     end
 
     def match?(*args)
@@ -29,9 +29,10 @@ module Koota
     end
 
     def skip(*args)
-      if (index = match?(*args))
-        advance(args[index].length)
-      end
+      index = match?(*args)
+      return unless index
+
+      advance(args[index].length)
     end
 
     def skip_until(*args)
