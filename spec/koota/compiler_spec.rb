@@ -13,6 +13,7 @@ RSpec.describe Koota::Compiler do
   let(:op_pick) { Koota::VM::Opcodes::PICK }
   let(:op_call) { Koota::VM::Opcodes::CALL }
   let(:op_ret)  { Koota::VM::Opcodes::RET }
+  let(:op_jrnd) { Koota::VM::Opcodes::JRND }
 
   describe '#call' do
     context 'with an empty array' do
@@ -170,16 +171,12 @@ RSpec.describe Koota::Compiler do
       expect(compiler.call(ast)).to eq(code)
     end
 
-    it 'compiles maybe down to pick' do
+    it 'compiles maybe down to jrnd' do
       code = [
-        op_pick, 0, 8, # Links to pick list
+        op_jrnd, 0, 7, # links to the halt
         op_put, 'b'.ord,
         op_put, 'a'.ord,
-        op_halt,
-        # Pick list starts here
-        0, 2,
-        0, 3, # Links to put 'b'
-        0, 7  # Links to halt
+        op_halt
       ]
 
       expect(compiler.call([:maybe, [:pattern, [:atom, 'b'], [:atom, 'a']]])).to eq(code)

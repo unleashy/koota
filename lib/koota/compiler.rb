@@ -104,14 +104,14 @@ module Koota
     end
 
     def compile_maybe(maybe)
-      # A maybe is just a pick with two options: the next opcode or the opcode
-      # following the maybe block.
-      pick_offset = @memory.length
-      add_bytecode(PICK, 0, 0)
+      # A maybe is compiled down to a jrnd pointing after its contents. We can
+      # link the offset immediately since we know the length of the maybe.
+      jrnd_offset = @memory.length
+      add_bytecode(JRND, 0, 0)
 
-      first_offset = @memory.length
       compile(maybe)
-      @links[:picks][pick_offset] = [first_offset, @memory.length]
+
+      @memory[jrnd_offset + 1], @memory[jrnd_offset + 2] = Encode.short(@memory.length)
     end
 
     def compile_atom(atom)
