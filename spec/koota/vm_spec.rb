@@ -12,6 +12,7 @@ RSpec.describe Koota::VM do
   let(:op_pick) { Koota::VM::Opcodes::PICK }
   let(:op_call) { Koota::VM::Opcodes::CALL }
   let(:op_ret)  { Koota::VM::Opcodes::RET }
+  let(:op_jrnd) { Koota::VM::Opcodes::JRND }
 
   describe '#call' do
     context 'with no bytecode' do
@@ -160,6 +161,25 @@ RSpec.describe Koota::VM do
     context 'with a ret opcode' do
       it 'halts if call stack is empty' do
         expect(vm.call([op_ret, op_put, 'a'.ord, op_halt])).to eq('')
+      end
+    end
+
+    context 'with a jrnd opcode' do
+      let(:vm) do
+        random = double('Random')
+        allow(random).to receive(:rand).with(instance_of(Integer)).and_return(0, 1)
+        described_class.new(random: random)
+      end
+
+      it 'jumps randomly to the given opcode' do
+        code = [
+          op_jrnd, 0, 5,
+          op_put, 'a'.ord,
+          op_halt
+        ]
+
+        expect(vm.call(code)).to eq('a') # first call does not jump (rand returns 0)
+        expect(vm.call(code)).to eq('') # second call does (rand returns 1)
       end
     end
   end

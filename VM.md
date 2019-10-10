@@ -28,6 +28,7 @@ Koota bytecode has the following opcodes:
 | `0x03` | `pick`   | Randomly picks an offset in the given list and jumps to it. |
 | `0x04` | `call`   | Calls subroutine.                                           |
 | `0x05` | `ret`    | Returns from subroutine.                                    |
+| `0x06` | `jrnd`   | Randomly jumps to the given offset.                         |
 
 With these few opcodes, any Koota pattern can be “bytecodified”. In the
 following section, they will be explained in more detail.
@@ -87,6 +88,14 @@ the last `call`, completing the subroutine.
 
 If the call stack is empty, the virtual machine should put the string
 `<ret with empty stack>` in the output then immediately `halt`.
+
+### Opcode `0x06`: `jrnd`
+
+- **Arguments**: an _offset_ (2 bytes)
+- **Total length**: 3 bytes
+
+When this opcode is run, there is 50% chance of jumping to the given _offset_.
+If the jump does not happen, this is a no-op.
 
 ### Unrecognised opcodes
 

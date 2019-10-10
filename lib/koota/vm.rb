@@ -12,6 +12,7 @@ module Koota
       PICK = 0x03
       CALL = 0x04
       RET  = 0x05
+      JRND = 0x06
     end
 
     CALL_STACK_MAX = 256
@@ -59,6 +60,9 @@ module Koota
         when Opcodes::RET
           offset = call_stack.pop
           break if offset.nil?
+
+        when Opcodes::JRND
+          offset = @random.rand(1) == 1 ? Decode.short(memory, offset) : offset + 2
 
         else break
         end
