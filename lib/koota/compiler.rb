@@ -17,6 +17,7 @@ module Koota
         calls: {},
         picks: {}
       }
+      @name = ''
 
       compile(ast)
 
@@ -37,7 +38,12 @@ module Koota
         next unless links.value?(ref)
 
         offsets[ref] = @memory.length
+
+        # Defeat self-references by knowing thy name.
+        @name = ref
         compile(ref_ast)
+        @name = ''
+
         add_bytecode(RET) # Close off with a ret since they are subroutines after all
       end
 
@@ -116,12 +122,15 @@ module Koota
 
     def compile_atom(atom)
       atom.each_char do |char|
-        if @refs[char.to_sym]
+        symbolified_char = char.to_sym
+
+        # The name check ensures we aren't calling ourselves.
+        if @refs[symbolified_char] && @name != symbolified_char
           # This will be linked to the real offset in a later stage (aka
           # `link_calls`). For now, we use zero as a placeholder and store the
           # current offset in `@links`. This is needed because we don't know
           # what offset to use before all the code is compiled.
-          @links[:calls][@memory.length] = char.to_sym
+          @links[:calls][@memory.length] = symbolified_char
           add_bytecode(CALL, 0, 0)
         else
           add_bytecode(PUT, *Encode.utf8(char))

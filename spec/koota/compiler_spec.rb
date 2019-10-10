@@ -86,6 +86,20 @@ RSpec.describe Koota::Compiler do
       expect(compiler.call([:atom, 'aBc'], B: [:atom, 'b'], X: [:atom, 'x'])).to eq(code)
     end
 
+    it 'ignores self-references' do
+      code = [
+        op_put, 'a'.ord,
+        op_call, 0, 8, # Subroutine 1
+        op_put, 'c'.ord,
+        op_halt,
+        # Subroutine 1 starts here
+        op_put, 'B'.ord,
+        op_ret
+      ]
+
+      expect(compiler.call([:atom, 'aBc'], B: [:atom, 'B'])).to eq(code)
+    end
+
     it 'compiles pattern' do
       expected = [
         op_put, 'a'.ord,
