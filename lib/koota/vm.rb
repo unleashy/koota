@@ -62,7 +62,7 @@ module Koota
           break if offset.nil?
 
         when Opcodes::JRND
-          offset = @random.rand(1) == 1 ? Decode.short(memory, offset) : offset + 2
+          offset = @random.rand(2) == 1 ? Decode.short(memory, offset) : offset + 2
 
         else break
         end
